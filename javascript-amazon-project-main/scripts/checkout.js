@@ -1,4 +1,4 @@
-import { cart, removeFromCart, calculateCartQuantity, updateQuantity } from "../data/cart.js";
+import { cart, removeFromCart, calculateCartQuantity, updateQuantity, updateDeliveryOption  } from "../data/cart.js";
 import { products } from "../data/products.js";
 import { formatCurrency } from "./utils/money.js";
 import dayjs from 'https://unpkg.com/dayjs@1.11.10/esm/index.js';
@@ -81,7 +81,9 @@ function deliveryOptionHTML(matchingProduct, cartItem) {
         const isChecked = deliveryOption.id === cartItem.deliveryOptionId;
 
         html +=
-            `<div class="delivery-option">
+            `<div class="delivery-option js-delivery-option"
+            data-product-id="${matchingProduct.id}"
+            data-delivery-option-id="${deliveryOption.id}">
       <input type="radio"
       ${isChecked ? 'checked' : ''}
       class="delivery-option-input"
@@ -171,8 +173,49 @@ document.querySelectorAll('.js-save-link')
     });
 
 
+    document.querySelectorAll('.js-delivery-option')
+    .forEach((element) => {
+      element.addEventListener('click', () => {
+        const {productId, deliveryOptionId} = element.dataset;
+        updateDeliveryOption(productId, deliveryOptionId);
+        
+      });
+    });
+
+    document.querySelectorAll('.js-delivery-option')
+    .forEach((element) => {
+        element.addEventListener('click', () => {
+            const productId = element.dataset.productId;
+            const deliveryOptionId = element.dataset.deliveryOptionId;
+
+            // Update the delivery option for the corresponding product in the cart
+            updateDeliveryOption(productId, deliveryOptionId);
+            
+        });
+    });
+
+    // document.querySelectorAll('.js-delivery-option')
+    // .forEach((element) => {
+    //     element.addEventListener('click', () => {
+    //         const productId = element.dataset.productId;
+    //         const deliveryOptionId = element.dataset.deliveryOptionId;
+
+    //         // Update the delivery option for the corresponding product in the cart
+    //         updateDeliveryOption(productId, deliveryOptionId);
+
+    //         // Update the delivery date displayed in the checkout section
+    //         updateDeliveryDateInCheckout(productId);
+    //     });
+    // });
+
+  //   function updateDeliveryDateInCheckout(productId) {
+  //     const deliveryDateElement = document.querySelector(`.js-cart-item-container-${productId} .delivery-date`);
+  //     const selectedDeliveryOptionElement = document.querySelector(`.js-cart-item-container-${productId} .delivery-option-input:checked`);
+  //     if (selectedDeliveryOptionElement) {
+  //         const selectedDeliveryDate = selectedDeliveryOptionElement.closest('.js-delivery-option').dataset.deliveryDate;
+  //         deliveryDateElement.textContent = `Delivery date: ${selectedDeliveryDate}`;
+  //     }
+  // }
 
 
-
-
-
+  
