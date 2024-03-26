@@ -1,14 +1,17 @@
-import { cart, removeFromCart, calculateCartQuantity, updateQuantity, updateDeliveryOption  } from "../data/cart.js";
-import { products } from "../data/products.js";
-import { formatCurrency } from "./utils/money.js";
+import { cart,removeFromCart,calculateCartQuantity,updateQuantity,updateDeliveryOption } from '../../data/cart.js';
+import { products } from '../../data/products.js';
+import { formatCurrency } from '../utils/money.js';
 import dayjs from 'https://unpkg.com/dayjs@1.11.10/esm/index.js';
-import { deliveryOptions } from "../data/deliveryOptions.js";
+import{deliveryOptions} from "../../data/deliveryOptions.js";
+
+
+
 
 const today = dayjs();
 const deliveryDate = today.add(7, `days`);
 console.log(deliveryDate.format(`dddd, MMMM D`));
 
-function renderOrderSummary() {
+export function renderOrderSummary() {
 
 let cartSummaryHTML = '';
 
@@ -210,11 +213,3 @@ document.querySelectorAll('.js-save-link')
   
   }
 
-  renderOrderSummary();
-
-    
-
-    
-
-
-  
