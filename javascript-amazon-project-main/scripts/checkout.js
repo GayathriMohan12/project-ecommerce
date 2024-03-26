@@ -8,6 +8,8 @@ const today = dayjs();
 const deliveryDate = today.add(7, `days`);
 console.log(deliveryDate.format(`dddd, MMMM D`));
 
+function renderOrderSummary() {
+
 let cartSummaryHTML = '';
 
 cart.forEach((cartItem) => {
@@ -173,49 +175,43 @@ document.querySelectorAll('.js-save-link')
     });
 
 
-    document.querySelectorAll('.js-delivery-option')
-    .forEach((element) => {
-      element.addEventListener('click', () => {
-        const {productId, deliveryOptionId} = element.dataset;
-        updateDeliveryOption(productId, deliveryOptionId);
-        
-      });
-    });
-
-    document.querySelectorAll('.js-delivery-option')
-    .forEach((element) => {
-        element.addEventListener('click', () => {
-            const productId = element.dataset.productId;
-            const deliveryOptionId = element.dataset.deliveryOptionId;
-
-            // Update the delivery option for the corresponding product in the cart
-            updateDeliveryOption(productId, deliveryOptionId);
-            
-        });
-    });
-
     // document.querySelectorAll('.js-delivery-option')
     // .forEach((element) => {
-    //     element.addEventListener('click', () => {
-    //         const productId = element.dataset.productId;
-    //         const deliveryOptionId = element.dataset.deliveryOptionId;
+    //   element.addEventListener('click', () => {
+    //     const {productId, deliveryOptionId} = element.dataset;
+    //     updateDeliveryOption(productId, deliveryOptionId);
 
-    //         // Update the delivery option for the corresponding product in the cart
-    //         updateDeliveryOption(productId, deliveryOptionId);
-
-    //         // Update the delivery date displayed in the checkout section
-    //         updateDeliveryDateInCheckout(productId);
-    //     });
+        
+        
+    //   });
     // });
 
-  //   function updateDeliveryDateInCheckout(productId) {
-  //     const deliveryDateElement = document.querySelector(`.js-cart-item-container-${productId} .delivery-date`);
-  //     const selectedDeliveryOptionElement = document.querySelector(`.js-cart-item-container-${productId} .delivery-option-input:checked`);
-  //     if (selectedDeliveryOptionElement) {
-  //         const selectedDeliveryDate = selectedDeliveryOptionElement.closest('.js-delivery-option').dataset.deliveryDate;
-  //         deliveryDateElement.textContent = `Delivery date: ${selectedDeliveryDate}`;
-  //     }
-  // }
+    document.querySelectorAll('.js-delivery-option').forEach((element) => {
+      element.addEventListener('click', () => {
+          const productId = element.dataset.productId;
+          const deliveryOptionId = element.dataset.deliveryOptionId;
+  
+          updateDeliveryOption(productId, deliveryOptionId);
+  
+          // Update the delivery date for the corresponding product
+          const container = document.querySelector(`.js-cart-item-container-${productId}`);
+          const deliveryDateElement = container.querySelector('.delivery-date');
+  
+          const selectedDeliveryOption = deliveryOptions.find(option => option.id === deliveryOptionId);
+          const deliveryDate = dayjs().add(selectedDeliveryOption.deliveryDays, 'days');
+          const dateString = deliveryDate.format('dddd, MMMM D');
+  
+          deliveryDateElement.textContent = `Delivery date: ${dateString}`;
+      });
+  });
+  
+  }
+
+  renderOrderSummary();
+
+    
+
+    
 
 
   
