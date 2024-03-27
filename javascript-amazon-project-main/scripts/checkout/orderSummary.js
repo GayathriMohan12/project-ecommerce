@@ -1,10 +1,9 @@
 import { cart,removeFromCart,calculateCartQuantity,updateQuantity,updateDeliveryOption } from '../../data/cart.js';
-import { products } from '../../data/products.js';
+import { getProduct, products } from '../../data/products.js';
 import { formatCurrency } from '../utils/money.js';
 import dayjs from 'https://unpkg.com/dayjs@1.11.10/esm/index.js';
-import{deliveryOptions} from "../../data/deliveryOptions.js";
-
-
+import{deliveryOptions, getDeliveryOption} from "../../data/deliveryOptions.js";
+import { renderPaymentSummary } from './paymentSummary.js';
 
 
 const today = dayjs();
@@ -19,18 +18,17 @@ cart.forEach((cartItem) => {
 
     const productId = cartItem.productId;
 
-    let matchingProduct;
+    const  matchingProduct = getProduct(productId);
 
-    products.forEach((product) => {
-        if (product.id === productId) {
-            matchingProduct = product;
-        }
-    });
+    const deliveryOptionId = cartItem.deliveryOptionId;
 
-    const deliveryDate = today.add(7, 'days'); // Update delivery date for each product
+    const  deliveryOption = getDeliveryOption(deliveryOptionId);
+
+
+    const deliveryDate = today.add(7, 'days'); 
     const dateString = deliveryDate.format('dddd, MMMM D');
 
-    cartSummaryHTML +=
+      cartSummaryHTML +=
 
         `<div class="cart-item-container js-cart-item-container-${matchingProduct.id}">
       <div class="delivery-date">
@@ -122,7 +120,8 @@ document.querySelectorAll('.js-delete-link')
 
             container.remove();
 
-            updateCartQuantity();
+            
+            renderPaymentSummary();
 
         })
     });
@@ -196,6 +195,7 @@ document.querySelectorAll('.js-save-link')
   
           updateDeliveryOption(productId, deliveryOptionId);
           renderOrderSummary();
+          renderPaymentSummary();
   
           // Update the delivery date for the corresponding product
           const container = document.querySelector(`.js-cart-item-container-${productId}`);
@@ -204,7 +204,7 @@ document.querySelectorAll('.js-save-link')
           const selectedDeliveryOption = deliveryOptions.find(option => option.id === deliveryOptionId);
           const deliveryDate = dayjs().add(selectedDeliveryOption.deliveryDays, 'days');
           const dateString = deliveryDate.format('dddd, MMMM D');
-  
+
           deliveryDateElement.textContent = `Delivery date: ${dateString}`;
 
           
@@ -212,4 +212,9 @@ document.querySelectorAll('.js-save-link')
   });
   
   }
+
+
+
+
+
 
