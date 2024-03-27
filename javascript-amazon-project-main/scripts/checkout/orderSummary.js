@@ -136,6 +136,7 @@ function updateCartQuantity() {
 
 updateCartQuantity();
 
+
 document.querySelectorAll('.js-update-quantity-link')
     .forEach((link) => {
         link.addEventListener('click', () => {
@@ -173,6 +174,7 @@ document.querySelectorAll('.js-save-link')
             quantityLabel.innerHTML = newQuantity;
 
             updateCartQuantity();
+            renderPaymentSummary();
         });
     });
 
