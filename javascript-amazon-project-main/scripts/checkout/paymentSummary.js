@@ -67,7 +67,7 @@ export function renderPaymentSummary() {
       </div>
     </div>
 
-    <button class="place-order-button button-primary">
+    <button onclick="redirect()" class="place-order-button button-primary">
       Place your order
     </button>
   `;
@@ -75,4 +75,8 @@ export function renderPaymentSummary() {
  
 document.querySelector('.js-payment-summary')
  .innerHTML = paymentSummaryHTML;
+}
+
+export function redirect() {
+  window.location.href = "orders.html";
 }
